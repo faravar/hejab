@@ -1,0 +1,1280 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>دفترچه ارتباط</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Vazirmatn:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg-deep:#080b14;
+    --bg-deep-2:#0d1424;
+    --panel:rgba(19,27,46,0.62);
+    --panel-solid:#131b2e;
+    --panel-hi:rgba(255,255,255,0.04);
+    --border:rgba(205,163,82,0.22);
+    --border-strong:rgba(205,163,82,0.45);
+    --gold:#cda352;
+    --gold-soft:#e8c98a;
+    --gold-dim:#8a6f3c;
+    --ink:#eef1f6;
+    --muted:#8b93a8;
+    --muted-2:#5c667e;
+    --teal:#57a89c;
+    --teal-soft:#8ecdc3;
+    --danger:#d8746a;
+    --radius:16px;
+    --radius-sm:10px;
+    --font-fa:'Vazirmatn',sans-serif;
+    --font-mono:'JetBrains Mono',monospace;
+  }
+  *{box-sizing:border-box;}
+  html,body{height:100%;}
+  body{
+    margin:0;
+    min-height:100vh;
+    font-family:var(--font-fa);
+    background:
+      radial-gradient(ellipse 900px 500px at 15% -10%, rgba(205,163,82,0.10), transparent 60%),
+      radial-gradient(ellipse 700px 500px at 100% 10%, rgba(87,168,156,0.08), transparent 55%),
+      linear-gradient(180deg, var(--bg-deep) 0%, var(--bg-deep-2) 100%);
+    color:var(--ink);
+    -webkit-font-smoothing:antialiased;
+  }
+  ::selection{background:rgba(205,163,82,0.35);}
+  a{color:inherit;}
+  button{font-family:inherit;}
+
+  /* ---------- astrolabe motif ---------- */
+  .astrolabe{
+    position:fixed; inset:auto auto -22vw -22vw; width:60vw; height:60vw;
+    opacity:0.06; pointer-events:none; z-index:0;
+    animation:spin 240s linear infinite;
+  }
+  .astrolabe.top{ inset:-26vw -20vw auto auto; bottom:auto; animation-duration:300s; animation-direction:reverse;}
+  @keyframes spin{ from{transform:rotate(0deg);} to{transform:rotate(360deg);} }
+
+  /* ---------- layout shells ---------- */
+  .screen{ position:relative; z-index:1; min-height:100vh; display:flex; flex-direction:column;}
+  .center-screen{ min-height:100vh; display:flex; align-items:center; justify-content:center; padding:28px 16px;}
+  .hidden{display:none !important;}
+
+  /* ---------- glass panel ---------- */
+  .glass{
+    background:var(--panel);
+    border:1px solid var(--border);
+    border-radius:var(--radius);
+    backdrop-filter:blur(18px);
+    -webkit-backdrop-filter:blur(18px);
+    box-shadow:0 20px 60px -20px rgba(0,0,0,0.6);
+  }
+
+  /* ---------- auth card ---------- */
+  .auth-card{ width:100%; max-width:440px; padding:30px 26px 26px; animation:riseIn .6s cubic-bezier(.2,.8,.2,1); }
+  @keyframes riseIn{ from{opacity:0; transform:translateY(14px);} to{opacity:1; transform:translateY(0);} }
+
+  .brand{ text-align:center; margin-bottom:22px;}
+  .brand .mark{
+    width:52px;height:52px;margin:0 auto 10px; display:flex; align-items:center; justify-content:center;
+    border:1px solid var(--border-strong); border-radius:14px;
+    background:linear-gradient(160deg, rgba(205,163,82,0.14), rgba(205,163,82,0.02));
+  }
+  .brand h1{ font-size:19px; font-weight:700; margin:0 0 4px; color:var(--gold-soft); letter-spacing:.2px;}
+  .brand p{ margin:0; font-size:12.5px; color:var(--muted);}
+
+  .tabs{ display:flex; gap:6px; background:rgba(255,255,255,0.03); border:1px solid var(--border); border-radius:12px; padding:4px; margin-bottom:20px;}
+  .tab-btn{ flex:1; padding:9px 0; border:none; background:transparent; color:var(--muted); border-radius:9px; font-size:13.5px; font-weight:600; cursor:pointer; transition:all .25s ease;}
+  .tab-btn.active{ background:linear-gradient(160deg, rgba(205,163,82,0.22), rgba(205,163,82,0.08)); color:var(--gold-soft); box-shadow:inset 0 0 0 1px var(--border-strong);}
+
+  .role-switch{ display:flex; gap:8px; margin-bottom:18px;}
+  .role-btn{
+    flex:1; padding:10px 8px; border-radius:var(--radius-sm); cursor:pointer; text-align:center;
+    border:1px solid var(--border); background:rgba(255,255,255,0.02); color:var(--muted);
+    font-size:13px; font-weight:600; transition:all .2s ease;
+  }
+  .role-btn.active{ color:var(--ink); border-color:var(--border-strong); background:rgba(205,163,82,0.10);}
+  .role-btn small{ display:block; font-weight:400; font-size:11px; color:var(--muted-2); margin-top:2px;}
+  .role-btn.active small{ color:var(--gold-soft);}
+
+  .field{ margin-bottom:14px;}
+  .field label{ display:block; font-size:12.5px; color:var(--muted); margin-bottom:6px;}
+  .field input, .field select, .field textarea{
+    width:100%; padding:11px 12px; border-radius:var(--radius-sm);
+    border:1px solid var(--border); background:rgba(255,255,255,0.03); color:var(--ink);
+    font-family:var(--font-fa); font-size:14px; outline:none; transition:border-color .2s ease, background .2s ease;
+  }
+  .field input[data-mono], .field.mono input{ font-family:var(--font-mono); letter-spacing:.5px; direction:ltr; text-align:right;}
+  .field input:focus, .field select:focus, .field textarea:focus{ border-color:var(--border-strong); background:rgba(255,255,255,0.05);}
+  .field select{ color-scheme:dark;}
+  .field select option{ background:var(--panel-solid); color:var(--ink);}
+  .field textarea{ resize:vertical; min-height:78px; line-height:1.7;}
+  .field .hint{ font-size:11px; color:var(--muted-2); margin-top:5px;}
+  .field .err{ font-size:11.5px; color:var(--danger); margin-top:5px; display:none;}
+  .field.has-error input{ border-color:var(--danger);}
+  .field.has-error .err{ display:block;}
+
+  .row-2{ display:grid; grid-template-columns:1fr 1fr; gap:10px;}
+
+  .captcha-row{ display:flex; gap:10px; align-items:stretch; margin-bottom:14px;}
+  .captcha-row .field{ flex:1; margin-bottom:0;}
+  .captcha-canvas-wrap{ display:flex; align-items:center; gap:6px;}
+  canvas#captchaCanvas, canvas.captcha-canvas{
+    border-radius:var(--radius-sm); border:1px solid var(--border); background:#0f1626; cursor:pointer;
+  }
+  .icon-btn{
+    width:40px; border-radius:var(--radius-sm); border:1px solid var(--border); background:rgba(255,255,255,0.03);
+    color:var(--muted); cursor:pointer; display:flex; align-items:center; justify-content:center; transition:all .2s ease;
+  }
+  .icon-btn:hover{ color:var(--gold-soft); border-color:var(--border-strong);}
+
+  .btn{
+    width:100%; padding:12px 0; border-radius:var(--radius-sm); border:1px solid var(--border-strong);
+    background:linear-gradient(160deg, var(--gold-soft), var(--gold)); color:#151008; font-weight:700; font-size:14.5px;
+    cursor:pointer; transition:transform .15s ease, box-shadow .15s ease; box-shadow:0 8px 24px -8px rgba(205,163,82,0.45);
+  }
+  .btn:hover{ transform:translateY(-1px); box-shadow:0 12px 28px -8px rgba(205,163,82,0.55);}
+  .btn:active{ transform:translateY(0);}
+  .btn.secondary{ background:rgba(255,255,255,0.04); color:var(--ink); box-shadow:none; border-color:var(--border);}
+  .btn.small{ width:auto; padding:8px 16px; font-size:13px;}
+  .btn:disabled{ opacity:.5; cursor:not-allowed; transform:none;}
+
+  .msg-banner{ margin-top:14px; padding:10px 12px; border-radius:var(--radius-sm); font-size:12.5px; display:none; }
+  .msg-banner.error{ background:rgba(216,116,106,0.12); border:1px solid rgba(216,116,106,0.35); color:#f0b3ac; display:block;}
+  .msg-banner.success{ background:rgba(87,168,156,0.12); border:1px solid rgba(87,168,156,0.35); color:var(--teal-soft); display:block;}
+
+  /* ---------- app shell (dashboards) ---------- */
+  .topbar{
+    position:sticky; top:0; z-index:5; display:flex; align-items:center; justify-content:space-between;
+    padding:14px 20px; background:rgba(8,11,20,0.75); backdrop-filter:blur(14px); border-bottom:1px solid var(--border);
+  }
+  .topbar .who{ display:flex; align-items:center; gap:10px;}
+  .topbar .avatar{
+    width:36px;height:36px;border-radius:10px; display:flex; align-items:center; justify-content:center;
+    background:linear-gradient(160deg, rgba(205,163,82,0.22), rgba(205,163,82,0.06)); border:1px solid var(--border-strong);
+    color:var(--gold-soft); font-weight:700; font-size:13px;
+  }
+  .topbar .who{ min-width:0; overflow:hidden;}
+  .topbar .name{ font-size:14px; font-weight:600; white-space:nowrap; overflow:hidden; text-overflow:ellipsis;}
+  .topbar .role-tag{ font-size:11px; color:var(--muted); white-space:nowrap; overflow:hidden; text-overflow:ellipsis;}
+  .topbar-actions{ display:flex; align-items:center; gap:8px; flex-shrink:0;}
+  .logout-btn{ background:transparent; border:1px solid var(--border); color:var(--muted); padding:8px 14px; border-radius:9px; font-size:12.5px; cursor:pointer; display:flex; align-items:center; gap:6px; transition:all .2s; flex-shrink:0; white-space:nowrap;}
+  .logout-btn:hover{ color:var(--danger); border-color:rgba(216,116,106,0.4);}
+  .reset-pw-topbtn{
+    background:linear-gradient(160deg, rgba(205,163,82,0.20), rgba(205,163,82,0.06));
+    border:1px solid var(--border-strong); color:var(--gold-soft); padding:8px 14px; border-radius:9px;
+    font-size:12.5px; font-weight:600; cursor:pointer; display:flex; align-items:center; gap:6px;
+    transition:all .2s ease; flex-shrink:0; white-space:nowrap; font-family:var(--font-fa);
+  }
+  .reset-pw-topbtn:hover{ transform:translateY(-1px); box-shadow:0 8px 18px -8px rgba(205,163,82,0.4);}
+  .reset-pw-topbtn .txt{ display:inline;}
+  @media (max-width:420px){
+    .reset-pw-topbtn{ padding:8px 10px;}
+    .reset-pw-topbtn .txt{ display:none;}
+  }
+
+  .content{ flex:1; max-width:760px; width:100%; margin:0 auto; padding:26px 18px 60px;}
+  .section-title{ display:flex; align-items:center; gap:10px; margin:0 0 16px; font-size:15px; font-weight:700; color:var(--gold-soft);}
+  .section-title .line{ flex:1; height:1px; background:linear-gradient(90deg, var(--border-strong), transparent);}
+
+  .compose{ padding:18px; margin-bottom:30px;}
+  .compose .date-preview{ display:flex; align-items:center; gap:10px; margin-bottom:14px; font-family:var(--font-mono); font-size:13px; color:var(--gold-soft); background:rgba(205,163,82,0.07); border:1px solid var(--border); border-radius:var(--radius-sm); padding:10px 12px;}
+  .compose .date-preview .day{ font-family:var(--font-fa); color:var(--ink); font-weight:600;}
+
+  /* ---------- timeline (student view) ---------- */
+  .timeline{ position:relative; padding-inline-start:26px;}
+  .timeline::before{ content:''; position:absolute; inset-inline-start:8px; top:6px; bottom:6px; width:1px; background:linear-gradient(180deg, var(--border-strong), transparent 92%);}
+  .t-item{ position:relative; padding:16px 18px; margin-bottom:16px;}
+  .t-item::before{
+    content:''; position:absolute; inset-inline-start:-26px; top:22px; width:9px; height:9px; border-radius:50%;
+    background:var(--gold); box-shadow:0 0 0 4px rgba(205,163,82,0.16);
+  }
+  .t-date{ display:flex; align-items:baseline; gap:10px; margin-bottom:10px;}
+  .t-date .jalali{ font-family:var(--font-mono); font-size:13px; color:var(--gold-soft); font-weight:600;}
+  .t-date .day{ font-size:12px; color:var(--muted);}
+  .t-text{ font-size:14.5px; line-height:1.9; color:var(--ink); white-space:pre-wrap; margin-bottom:14px;}
+
+  .comment-block{ border-radius:var(--radius-sm); padding:12px 14px; margin-top:10px; font-size:13px; line-height:1.8;}
+  .comment-block.teacher{ background:rgba(205,163,82,0.08); border:1px solid rgba(205,163,82,0.25);}
+  .comment-block.parent{ background:rgba(87,168,156,0.08); border:1px solid rgba(87,168,156,0.25);}
+  .comment-block .who{ font-size:11px; font-weight:700; margin-bottom:5px; display:flex; align-items:center; gap:5px;}
+  .comment-block.teacher .who{ color:var(--gold-soft);}
+  .comment-block.parent .who{ color:var(--teal-soft);}
+  .comment-block .empty{ color:var(--muted-2); font-style:normal;}
+
+  .parent-input{ margin-top:10px;}
+  .parent-input textarea{ width:100%; min-height:60px; padding:10px 12px; border-radius:var(--radius-sm); border:1px solid var(--border); background:rgba(255,255,255,0.03); color:var(--ink); font-family:var(--font-fa); font-size:13px; resize:vertical; margin-bottom:8px;}
+
+  .empty-state{ text-align:center; padding:60px 20px; color:var(--muted);}
+  .empty-state .glyph{ font-size:30px; margin-bottom:10px; opacity:.5;}
+  .empty-state p{ font-size:13.5px; margin:0;}
+
+  /* ---------- teacher day accordion ---------- */
+  .day-list{ display:flex; flex-direction:column; gap:10px;}
+  .day-item{ overflow:hidden;}
+  .day-head{ display:flex; align-items:center; justify-content:space-between; gap:12px; padding:14px 16px; cursor:pointer; user-select:none;}
+  .day-head .d-left{ display:flex; align-items:center; gap:12px;}
+  .day-head .jalali{ font-family:var(--font-mono); font-size:13px; color:var(--gold-soft); font-weight:600; white-space:nowrap;}
+  .day-head .day{ font-size:12px; color:var(--muted);}
+  .day-head .preview{ font-size:12.5px; color:var(--muted); max-width:260px; overflow:hidden; text-overflow:ellipsis; white-space:nowrap;}
+  .chevron{ transition:transform .25s ease; color:var(--muted); flex-shrink:0;}
+  .day-item.open .chevron{ transform:rotate(180deg);}
+  .day-body{ max-height:0; overflow:hidden; transition:max-height .3s ease;}
+  .day-body-inner{ padding:0 16px 16px; border-top:1px solid var(--border);}
+  .full-text{ font-size:13.5px; color:var(--ink); line-height:1.8; padding:12px 0; white-space:pre-wrap;}
+
+  .student-row{ padding:12px; border-radius:var(--radius-sm); background:rgba(255,255,255,0.02); border:1px solid var(--border); margin-bottom:10px;}
+  .student-row .s-name{ font-size:13.5px; font-weight:600; margin-bottom:8px; display:flex; align-items:center; gap:8px;}
+  .student-row .s-name .badge{ font-size:10.5px; color:var(--muted-2); font-weight:400;}
+  .student-row textarea{ width:100%; min-height:52px; padding:9px 11px; border-radius:9px; border:1px solid var(--border); background:rgba(255,255,255,0.03); color:var(--ink); font-family:var(--font-fa); font-size:13px; resize:vertical; margin-top:8px; margin-bottom:8px;}
+
+
+  .pagination{ display:flex; align-items:center; justify-content:center; gap:14px; margin-top:20px;}
+  .pagination button{ background:rgba(255,255,255,0.03); border:1px solid var(--border); color:var(--muted); padding:8px 16px; border-radius:9px; font-size:12.5px; cursor:pointer; transition:all .2s ease; font-family:var(--font-fa);}
+  .pagination button:hover:not(:disabled){ color:var(--gold-soft); border-color:var(--border-strong);}
+  .pagination button:disabled{ opacity:.35; cursor:not-allowed;}
+  .pagination .page-info{ font-family:var(--font-mono); font-size:12px; color:var(--muted); white-space:nowrap;}
+
+  .loader{ display:flex; align-items:center; justify-content:center; padding:40px 0; color:var(--muted); font-size:13px; gap:10px;}
+  .spin-dot{ width:14px; height:14px; border-radius:50%; border:2px solid var(--border-strong); border-top-color:var(--gold); animation:spin 0.8s linear infinite;}
+
+  .toast{ position:fixed; bottom:22px; left:50%; transform:translateX(-50%) translateY(20px); background:var(--panel-solid); border:1px solid var(--border-strong); color:var(--ink); padding:11px 18px; border-radius:12px; font-size:13px; box-shadow:0 12px 32px -10px rgba(0,0,0,0.6); opacity:0; transition:all .3s ease; z-index:50; pointer-events:none;}
+  .toast.show{ opacity:1; transform:translateX(-50%) translateY(0);}
+
+  @media (max-width:480px){
+    .row-2{ grid-template-columns:1fr;}
+    .day-head .preview{ display:none;}
+  }
+  @media (prefers-reduced-motion: reduce){
+    .astrolabe{ animation:none;}
+    .auth-card{ animation:none;}
+  }
+
+  .site-footer{
+    position:fixed; inset-inline-start:0; inset-inline-end:0; bottom:8px;
+    text-align:center; font-size:10.5px; color:var(--muted-2); z-index:2; pointer-events:none;
+  }
+  .site-footer a{ pointer-events:auto; color:var(--muted-2); text-decoration:none; border-bottom:1px dotted rgba(139,147,168,0.4); transition:color .2s ease;}
+  .site-footer a:hover{ color:var(--gold-soft); border-bottom-color:var(--gold-soft);}
+</style>
+</head>
+<body>
+
+<svg class="astrolabe" viewBox="0 0 400 400" xmlns="http://www.w3.org/2000/svg">
+  <circle cx="200" cy="200" r="190" fill="none" stroke="#cda352" stroke-width="1"/>
+  <circle cx="200" cy="200" r="150" fill="none" stroke="#cda352" stroke-width="1"/>
+  <circle cx="200" cy="200" r="110" fill="none" stroke="#cda352" stroke-width="1"/>
+  <g stroke="#cda352" stroke-width="1">
+    <line x1="200" y1="10" x2="200" y2="390"/><line x1="10" y1="200" x2="390" y2="200"/>
+    <line x1="53" y1="53" x2="347" y2="347"/><line x1="347" y1="53" x2="53" y2="347"/>
+  </g>
+  <polygon points="200,60 320,270 80,270" fill="none" stroke="#cda352" stroke-width="1"/>
+  <polygon points="200,340 80,130 320,130" fill="none" stroke="#cda352" stroke-width="1"/>
+</svg>
+<svg class="astrolabe top" viewBox="0 0 400 400" xmlns="http://www.w3.org/2000/svg">
+  <circle cx="200" cy="200" r="190" fill="none" stroke="#cda352" stroke-width="1"/>
+  <circle cx="200" cy="200" r="130" fill="none" stroke="#cda352" stroke-width="1"/>
+  <polygon points="200,60 320,270 80,270" fill="none" stroke="#cda352" stroke-width="1"/>
+  <polygon points="200,340 80,130 320,130" fill="none" stroke="#cda352" stroke-width="1"/>
+</svg>
+
+<!-- ===================== AUTH VIEW ===================== -->
+<div id="view-auth" class="screen">
+  <div class="center-screen">
+    <div class="glass auth-card">
+      <div class="brand">
+        <div class="mark">
+          <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="#e8c98a" stroke-width="1.6"><path d="M4 19.5V6a2 2 0 0 1 2-2h13v15.5"/><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H19"/><path d="M9 7h7M9 10.5h7"/></svg>
+        </div>
+        <h1>دفترچه ارتباط</h1>
+        <p>پل ارتباطی خانه و مدرسه</p>
+      </div>
+
+      <div class="tabs">
+        <button class="tab-btn active" data-tab="login" onclick="switchTab('login')">ورود</button>
+        <button class="tab-btn" data-tab="signup" onclick="switchTab('signup')">ثبت‌نام</button>
+      </div>
+
+      <!-- ---------- LOGIN ---------- -->
+      <form id="loginForm" onsubmit="return handleLogin(event)">
+        <div class="field mono" id="f-login-code">
+          <label>کد ملی</label>
+          <input type="text" inputmode="numeric" id="loginCode" maxlength="10" placeholder="۰۰۱۲۳۴۵۶۷۸" oninput="this.value=this.value.replace(/[^0-9]/g,'')">
+          <div class="err">کد ملی باید فقط شامل عدد باشد</div>
+        </div>
+        <div class="field" id="f-login-pw">
+          <label>رمز عبور</label>
+          <input type="password" id="loginPw" placeholder="رمز عبور خود را وارد کنید">
+        </div>
+        <div class="captcha-row">
+          <div class="field mono" id="f-login-captcha" style="margin-bottom:0">
+            <label>کد امنیتی</label>
+            <input type="text" id="loginCaptchaInput" placeholder="کد را وارد کنید">
+          </div>
+          <div class="captcha-canvas-wrap">
+            <canvas class="captcha-canvas" id="loginCaptchaCanvas" width="108" height="44"></canvas>
+            <button type="button" class="icon-btn" onclick="drawCaptcha('loginCaptchaCanvas','login')" title="کد جدید">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 12a9 9 0 1 1-2.6-6.4"/><path d="M21 4v6h-6"/></svg>
+            </button>
+          </div>
+        </div>
+        <div id="loginBanner" class="msg-banner"></div>
+        <button class="btn" type="submit" style="margin-top:6px">ورود به دفترچه</button>
+        <div style="text-align:center;margin-top:12px">
+          <a href="#" onclick="openForgot();return false;" style="font-size:12px;color:var(--muted);text-decoration:none;border-bottom:1px dotted var(--muted-2)">رمز عبور را فراموش کرده‌اید؟</a>
+        </div>
+      </form>
+
+      <!-- ---------- FORGOT PASSWORD (فقط آموزگار) ---------- -->
+      <div id="forgotBox" class="hidden">
+        <div style="font-size:12.5px;color:var(--muted);margin-bottom:16px;line-height:1.8">
+          بازیابی رمز فقط برای آموزگاران است. دانش‌آموزان باید از آموزگار کلاس خود بخواهند رمزشان را از پنل بازنشانی کند.
+        </div>
+
+        <div id="forgotStep1">
+          <div class="field mono">
+            <label>کد ملی آموزگار</label>
+            <input type="text" inputmode="numeric" id="forgotCode" maxlength="10" placeholder="۰۰۱۲۳۴۵۶۷۸" oninput="this.value=this.value.replace(/[^0-9]/g,'')">
+          </div>
+          <div id="forgotBanner1" class="msg-banner"></div>
+          <button class="btn" type="button" onclick="submitForgotCode()">مرحله بعد</button>
+        </div>
+
+        <div id="forgotStep2" class="hidden">
+          <div class="field">
+            <label id="forgotQuestionLabel" style="color:var(--gold-soft);font-size:13px">—</label>
+            <input type="text" id="forgotAnswer" placeholder="پاسخ شما">
+          </div>
+          <div class="field">
+            <label>رمز عبور جدید</label>
+            <input type="password" id="forgotNewPw" placeholder="ترکیبی از عدد و حرف">
+          </div>
+          <div id="forgotBanner2" class="msg-banner"></div>
+          <button class="btn" type="button" onclick="submitForgotAnswer()">تغییر رمز عبور</button>
+        </div>
+
+        <div style="text-align:center;margin-top:12px">
+          <a href="#" onclick="closeForgot();return false;" style="font-size:12px;color:var(--muted);text-decoration:none;border-bottom:1px dotted var(--muted-2)">بازگشت به ورود</a>
+        </div>
+      </div>
+
+      <!-- ---------- SIGNUP ---------- -->
+      <form id="signupForm" class="hidden" onsubmit="return handleSignup(event)">
+        <div class="role-switch">
+          <div class="role-btn active" id="role-student" onclick="setRole('student')">
+            دانش‌آموز <small>ثبت‌نام با کد ملی خودم</small>
+          </div>
+          <div class="role-btn" id="role-teacher" onclick="setRole('teacher')">
+            آموزگار <small>ثبت‌نام کلاس</small>
+          </div>
+        </div>
+
+        <div class="row-2">
+          <div class="field" id="f-su-fname">
+            <label>نام</label>
+            <input type="text" id="suFirstName" placeholder="نام">
+          </div>
+          <div class="field" id="f-su-lname">
+            <label>نام خانوادگی</label>
+            <input type="text" id="suLastName" placeholder="نام خانوادگی">
+          </div>
+        </div>
+
+        <div class="field mono" id="f-su-code">
+          <label>کد ملی</label>
+          <input type="text" inputmode="numeric" id="suCode" maxlength="10" placeholder="۰۰۱۲۳۴۵۶۷۸" oninput="this.value=this.value.replace(/[^0-9]/g,'')">
+          <div class="err">کد ملی باید فقط شامل عدد باشد</div>
+        </div>
+
+        <!-- student-only -->
+        <div id="studentOnlyFields">
+          <div class="field" id="f-su-class">
+            <label>کلاس و آموزگار</label>
+            <select id="suClassSelect">
+              <option value="">در حال بارگذاری لیست کلاس‌ها…</option>
+            </select>
+            <div class="hint">این لیست از روی کلاس‌هایی که آموزگاران ثبت کرده‌اند ساخته می‌شود</div>
+          </div>
+        </div>
+
+        <!-- teacher-only -->
+        <div id="teacherOnlyFields" class="hidden">
+          <div class="field" id="f-su-tclass">
+            <label>نام کلاس</label>
+            <input type="text" id="suTeacherClassName" placeholder="مثلاً: پایه دوم الف">
+          </div>
+          <div class="field" id="f-su-secq">
+            <label>سوال امنیتی (برای فراموشی رمز)</label>
+            <select id="suSecurityQuestion">
+              <option value="نام معلم مورد علاقه‌تان در دوران دبستان؟">نام معلم مورد علاقه‌تان در دوران دبستان؟</option>
+              <option value="نام اولین مدرسه‌ای که در آن تدریس کرده‌اید؟">نام اولین مدرسه‌ای که در آن تدریس کرده‌اید؟</option>
+              <option value="نام حیوان خانگی موردعلاقه‌تان؟">نام حیوان خانگی موردعلاقه‌تان؟</option>
+              <option value="شهر محل تولدتان؟">شهر محل تولدتان؟</option>
+              <option value="نام دبیرستانی که در آن درس خوانده‌اید؟">نام دبیرستانی که در آن درس خوانده‌اید؟</option>
+            </select>
+          </div>
+          <div class="field" id="f-su-seca">
+            <label>پاسخ سوال امنیتی</label>
+            <input type="text" id="suSecurityAnswer" placeholder="پاسخ خود را وارد کنید">
+            <div class="hint">این پاسخ رو حتماً به‌خاطر بسپارید، برای بازیابی رمز لازمه</div>
+          </div>
+        </div>
+
+        <div class="field" id="f-su-pw">
+          <label>رمز عبور</label>
+          <input type="password" id="suPassword" placeholder="ترکیبی از عدد و حرف">
+          <div class="hint">حداقل ۶ کاراکتر، شامل حرف و عدد</div>
+          <div class="err">رمز عبور باید ترکیبی از حرف و عدد و حداقل ۶ کاراکتر باشد</div>
+        </div>
+
+        <div class="captcha-row">
+          <div class="field mono" id="f-su-captcha" style="margin-bottom:0">
+            <label>کد امنیتی</label>
+            <input type="text" id="suCaptchaInput" placeholder="کد را وارد کنید">
+          </div>
+          <div class="captcha-canvas-wrap">
+            <canvas class="captcha-canvas" id="suCaptchaCanvas" width="108" height="44"></canvas>
+            <button type="button" class="icon-btn" onclick="drawCaptcha('suCaptchaCanvas','su')" title="کد جدید">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 12a9 9 0 1 1-2.6-6.4"/><path d="M21 4v6h-6"/></svg>
+            </button>
+          </div>
+        </div>
+
+        <div id="signupBanner" class="msg-banner"></div>
+        <button class="btn" type="submit" style="margin-top:6px">ثبت‌نام</button>
+      </form>
+
+    </div>
+  </div>
+</div>
+
+<!-- ===================== STUDENT VIEW ===================== -->
+<div id="view-student" class="screen hidden">
+  <div class="topbar">
+    <div class="who">
+      <div class="avatar" id="stAvatar">ز</div>
+      <div>
+        <div class="name" id="stName">—</div>
+        <div class="role-tag" id="stClass">—</div>
+      </div>
+    </div>
+    <button class="logout-btn" onclick="logout()">
+      خروج
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><path d="M16 17l5-5-5-5"/><path d="M21 12H9"/></svg>
+    </button>
+  </div>
+  <div class="content">
+    <div class="section-title">پیام‌های آموزگار<span class="line"></span></div>
+    <div id="studentList"><div class="loader"><div class="spin-dot"></div> در حال بارگذاری…</div></div>
+  </div>
+</div>
+
+<!-- ===================== TEACHER VIEW ===================== -->
+<div id="view-teacher" class="screen hidden">
+  <div class="topbar">
+    <div class="who">
+      <div class="avatar" id="tAvatar">آ</div>
+      <div>
+        <div class="name" id="tName">—</div>
+        <div class="role-tag" id="tClass">—</div>
+      </div>
+    </div>
+    <div class="topbar-actions">
+      <button class="reset-pw-topbtn" onclick="openResetPwModal()" title="بازنشانی رمز دانش‌آموز">
+        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 12a9 9 0 1 1-2.6-6.4"/><path d="M21 4v6h-6"/></svg>
+        <span class="txt">بازنشانی رمز</span>
+      </button>
+      <button class="logout-btn" onclick="logout()">
+        خروج
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><path d="M16 17l5-5-5-5"/><path d="M21 12H9"/></svg>
+      </button>
+    </div>
+  </div>
+  <div class="content">
+    <div class="glass compose">
+      <div class="section-title" style="margin-bottom:12px">پیام گروهی امروز<span class="line"></span></div>
+      <div class="date-preview">
+        <span id="composeJalali">—</span>
+        <span class="day" id="composeDay">—</span>
+      </div>
+      <div class="field" style="margin-bottom:12px">
+        <textarea id="composeText" placeholder="موضوع امروز، تکالیف، یادآوری یا هر پیامی که می‌خواهید برای همه دانش‌آموزان کلاس بفرستید…"></textarea>
+      </div>
+      <button class="btn" onclick="sendTeacherMessage()">ارسال پیام گروهی</button>
+      <div id="composeBanner" class="msg-banner"></div>
+    </div>
+
+    <div class="section-title">تاریخچه روزها<span class="line"></span></div>
+    <div id="teacherDayList"><div class="loader"><div class="spin-dot"></div> در حال بارگذاری…</div></div>
+  </div>
+</div>
+
+<!-- ===================== FORCE PASSWORD CHANGE (بعد از بازنشانی توسط معلم) ===================== -->
+<div id="forcePwOverlay" class="hidden" style="position:fixed;inset:0;z-index:40;display:flex;align-items:center;justify-content:center;background:rgba(5,7,13,0.72);backdrop-filter:blur(6px);padding:16px;">
+  <div class="glass auth-card" style="max-width:400px">
+    <div class="brand">
+      <div class="mark">
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#e8c98a" stroke-width="1.6"><path d="M12 15v2m-6 4h12a2 2 0 0 0 2-2v-6a2 2 0 0 0-2-2H6a2 2 0 0 0-2 2v6a2 2 0 0 0 2 2zM7 11V7a5 5 0 0 1 10 0v4"/></svg>
+      </div>
+      <h1>تعیین رمز جدید</h1>
+      <p>رمز شما توسط آموزگار بازنشانی شده؛ لطفاً یک رمز جدید انتخاب کنید</p>
+    </div>
+    <div class="field">
+      <label>رمز عبور جدید</label>
+      <input type="password" id="forcePwNew" placeholder="ترکیبی از عدد و حرف">
+      <div class="hint">حداقل ۶ کاراکتر، شامل حرف و عدد</div>
+    </div>
+    <div class="field">
+      <label>تکرار رمز عبور جدید</label>
+      <input type="password" id="forcePwConfirm" placeholder="رمز جدید را دوباره وارد کنید">
+    </div>
+    <div id="forcePwBanner" class="msg-banner"></div>
+    <button class="btn" type="button" onclick="submitForcePasswordChange()">ثبت رمز جدید و ورود</button>
+  </div>
+</div>
+
+<!-- ===================== RESET STUDENT PASSWORD MODAL (برای معلم) ===================== -->
+<div id="resetPwOverlay" class="hidden" style="position:fixed;inset:0;z-index:40;display:flex;align-items:center;justify-content:center;background:rgba(5,7,13,0.72);backdrop-filter:blur(6px);padding:16px;">
+  <div class="glass auth-card" style="max-width:400px">
+
+    <div id="resetPwStep1">
+      <div class="brand">
+        <div class="mark">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#e8c98a" stroke-width="1.6"><path d="M12 22c5.5-1 9-5.5 9-11V5l-9-3-9 3v6c0 5.5 3.5 10 9 11z"/></svg>
+        </div>
+        <h1>بازنشانی رمز دانش‌آموز</h1>
+        <p>دانش‌آموز را انتخاب کنید تا یک رمز جدید ساخته شود</p>
+      </div>
+      <div class="field">
+        <label>دانش‌آموز</label>
+        <select id="resetPwStudentSelect">
+          <option value="">در حال بارگذاری…</option>
+        </select>
+      </div>
+      <div id="resetPwBanner" class="msg-banner"></div>
+      <button class="btn" type="button" onclick="submitResetStudentPw()">ساخت رمز جدید</button>
+      <button class="btn secondary" type="button" style="margin-top:8px" onclick="closeResetPwModal()">انصراف</button>
+    </div>
+
+    <div id="resetPwStep2" class="hidden" style="text-align:center">
+      <div class="brand">
+        <div class="mark">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#e8c98a" stroke-width="1.6"><path d="M20 6L9 17l-5-5"/></svg>
+        </div>
+        <h1 id="resetPwStudentName">—</h1>
+        <p>رمز موقت جدید — فقط همین یک‌بار نمایش داده می‌شود</p>
+      </div>
+      <div class="field mono">
+        <input type="text" id="resetPwTempValue" readonly style="text-align:center;font-size:19px;letter-spacing:2px;font-weight:700;color:var(--gold-soft)">
+      </div>
+      <div class="hint" style="margin-bottom:16px">این رمز را به ولی دانش‌آموز اطلاع دهید. در اولین ورود، سیستم از او می‌خواهد رمز جدیدی انتخاب کند.</div>
+      <button class="btn" type="button" onclick="closeResetPwModal()">متوجه شدم</button>
+    </div>
+
+  </div>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<div class="site-footer">
+  طراحی و توسعه: <a href="https://karimzaadeh.ir" target="_blank" rel="noopener">Farhad Karimzadeh</a>
+</div>
+
+<script>
+/* ============================================================
+   تنظیمات — بعد از دیپلوی Apps Script این آدرس رو جایگزین کن
+   ============================================================ */
+const CONFIG = {
+  API_URL: 'https://script.google.com/macros/s/AKfycby5p_YWtace_i1556obZ6dpyChF1CO54VARpqphD2ErU6bKdvWOYIss2j54JEFAb-kCHA/exec'
+};
+
+/* ============================================================
+   تاریخ جلالی
+   ============================================================ */
+const PERSIAN_MONTHS = ['فروردین','اردیبهشت','خرداد','تیر','مرداد','شهریور','مهر','آبان','آذر','دی','بهمن','اسفند'];
+const PERSIAN_DAYS = ['یکشنبه','دوشنبه','سه‌شنبه','چهارشنبه','پنجشنبه','جمعه','شنبه']; // index = JS getDay()
+
+function toPersianDigits(str){
+  const en = '0123456789', fa = '۰۱۲۳۴۵۶۷۸۹';
+  return String(str).replace(/[0-9]/g, d => fa[en.indexOf(d)]);
+}
+
+function gregorianToJalali(gy, gm, gd){
+  const g_d_m = [0,31,59,90,120,151,181,212,243,273,304,334];
+  let jy = (gy <= 1600) ? 0 : 979;
+  gy -= (gy <= 1600) ? 621 : 1600;
+  const gy2 = (gm > 2) ? (gy + 1) : gy;
+  let days = (365*gy) + Math.floor((gy2+3)/4) - Math.floor((gy2+99)/100) + Math.floor((gy2+399)/400) - 80 + gd + g_d_m[gm-1];
+  jy += 33 * Math.floor(days/12053);
+  days %= 12053;
+  jy += 4 * Math.floor(days/1461);
+  days %= 1461;
+  if (days > 365){ jy += Math.floor((days-1)/365); days = (days-1) % 365; }
+  let jm, jd;
+  if (days < 186){ jm = 1 + Math.floor(days/31); jd = 1 + (days % 31); }
+  else { jm = 7 + Math.floor((days-186)/30); jd = 1 + ((days-186) % 30); }
+  return [jy, jm, jd];
+}
+
+function todayJalaliInfo(){
+  const now = new Date();
+  const [jy, jm, jd] = gregorianToJalali(now.getFullYear(), now.getMonth()+1, now.getDate());
+  return {
+    jalaliStr: `${toPersianDigits(jy)}/${toPersianDigits(String(jm).padStart(2,'0'))}/${toPersianDigits(String(jd).padStart(2,'0'))}`,
+    monthName: PERSIAN_MONTHS[jm-1],
+    dayName: PERSIAN_DAYS[now.getDay()],
+    jd, jm, jy
+  };
+}
+
+function prettyJalali(jalaliStr){
+  return toPersianDigits(jalaliStr);
+}
+
+/* ============================================================
+   API
+   ============================================================ */
+async function api(action, payload){
+  const res = await fetch(CONFIG.API_URL, {
+    method: 'POST',
+    headers: { 'Content-Type': 'text/plain;charset=utf-8' },
+    body: JSON.stringify({ action, payload })
+  });
+  const data = await res.json();
+  if (!data.ok) throw new Error(data.error || 'خطای ناشناخته');
+  return data;
+}
+
+/* ============================================================
+   کپچا
+   ============================================================ */
+const captchaState = { login: '', su: '' };
+function randCaptchaCode(){
+  const chars = 'ABCDEFGHJKMNPQRSTUVWXYZ23456789';
+  let s = '';
+  for (let i=0;i<5;i++) s += chars[Math.floor(Math.random()*chars.length)];
+  return s;
+}
+function drawCaptcha(canvasId, key){
+  const canvas = document.getElementById(canvasId);
+  const ctx = canvas.getContext('2d');
+  const code = randCaptchaCode();
+  captchaState[key] = code;
+  const w = canvas.width, h = canvas.height;
+  ctx.clearRect(0,0,w,h);
+  ctx.fillStyle = '#0f1626';
+  ctx.fillRect(0,0,w,h);
+  for (let i=0;i<5;i++){
+    ctx.strokeStyle = `rgba(205,163,82,${0.15+Math.random()*0.2})`;
+    ctx.beginPath();
+    ctx.moveTo(Math.random()*w, Math.random()*h);
+    ctx.lineTo(Math.random()*w, Math.random()*h);
+    ctx.stroke();
+  }
+  ctx.font = '600 20px JetBrains Mono, monospace';
+  ctx.textBaseline = 'middle';
+  const gap = w / (code.length + 1);
+  for (let i=0;i<code.length;i++){
+    ctx.save();
+    const x = gap*(i+1);
+    const y = h/2 + (Math.random()*8-4);
+    ctx.translate(x,y);
+    ctx.rotate((Math.random()*0.5-0.25));
+    ctx.fillStyle = `hsl(${38+Math.random()*20}, 55%, ${65+Math.random()*10}%)`;
+    ctx.fillText(code[i], -6, 0);
+    ctx.restore();
+  }
+  for (let i=0;i<40;i++){
+    ctx.fillStyle = `rgba(255,255,255,${Math.random()*0.06})`;
+    ctx.fillRect(Math.random()*w, Math.random()*h, 1, 1);
+  }
+}
+
+/* ============================================================
+   toast
+   ============================================================ */
+let toastTimer;
+function showToast(msg){
+  const t = document.getElementById('toast');
+  t.textContent = msg;
+  t.classList.add('show');
+  clearTimeout(toastTimer);
+  toastTimer = setTimeout(()=> t.classList.remove('show'), 2600);
+}
+function setBanner(id, type, msg){
+  const el = document.getElementById(id);
+  el.className = 'msg-banner ' + type;
+  el.textContent = msg;
+}
+function clearBanner(id){
+  const el = document.getElementById(id);
+  el.className = 'msg-banner';
+  el.textContent = '';
+}
+
+/* ============================================================
+   تب‌ها و نقش ثبت‌نام
+   ============================================================ */
+function switchTab(tab){
+  document.querySelectorAll('.tab-btn').forEach(b => b.classList.toggle('active', b.dataset.tab === tab));
+  document.getElementById('loginForm').classList.toggle('hidden', tab !== 'login');
+  document.getElementById('signupForm').classList.toggle('hidden', tab !== 'signup');
+  document.getElementById('forgotBox').classList.add('hidden');
+  if (tab === 'login') document.getElementById('loginForm').classList.remove('hidden');
+}
+
+/* ============================================================
+   فراموشی رمز (فقط آموزگار)
+   ============================================================ */
+let forgotCodeRef = '';
+function openForgot(){
+  document.getElementById('loginForm').classList.add('hidden');
+  document.getElementById('forgotBox').classList.remove('hidden');
+  document.getElementById('forgotStep1').classList.remove('hidden');
+  document.getElementById('forgotStep2').classList.add('hidden');
+  clearBanner('forgotBanner1'); clearBanner('forgotBanner2');
+}
+function closeForgot(){
+  document.getElementById('forgotBox').classList.add('hidden');
+  document.getElementById('loginForm').classList.remove('hidden');
+}
+async function submitForgotCode(){
+  clearBanner('forgotBanner1');
+  const code = document.getElementById('forgotCode').value.trim();
+  if (!/^\d+$/.test(code)){ setBanner('forgotBanner1','error','کد ملی باید فقط عدد باشد'); return; }
+  try{
+    const { question } = await api('getSecurityQuestion', { nationalCode: code });
+    forgotCodeRef = code;
+    document.getElementById('forgotQuestionLabel').textContent = question;
+    document.getElementById('forgotStep1').classList.add('hidden');
+    document.getElementById('forgotStep2').classList.remove('hidden');
+  }catch(err){
+    setBanner('forgotBanner1','error', err.message);
+  }
+}
+async function submitForgotAnswer(){
+  clearBanner('forgotBanner2');
+  const answer = document.getElementById('forgotAnswer').value.trim();
+  const newPassword = document.getElementById('forgotNewPw').value;
+  if (!answer){ setBanner('forgotBanner2','error','پاسخ را وارد کنید'); return; }
+  if (!/^(?=.*[A-Za-z\u0600-\u06FF])(?=.*\d).{6,}$/.test(newPassword)){ setBanner('forgotBanner2','error','رمز جدید باید ترکیبی از عدد و حرف و حداقل ۶ کاراکتر باشد'); return; }
+  try{
+    await api('resetWithSecurityAnswer', { nationalCode: forgotCodeRef, answer, newPassword });
+    setBanner('forgotBanner2','success','رمز عبور با موفقیت تغییر کرد. اکنون وارد شوید.');
+    setTimeout(closeForgot, 1500);
+  }catch(err){
+    setBanner('forgotBanner2','error', err.message);
+  }
+}
+let currentSignupRole = 'student';
+function setRole(role){
+  currentSignupRole = role;
+  document.getElementById('role-student').classList.toggle('active', role === 'student');
+  document.getElementById('role-teacher').classList.toggle('active', role === 'teacher');
+  document.getElementById('studentOnlyFields').classList.toggle('hidden', role !== 'student');
+  document.getElementById('teacherOnlyFields').classList.toggle('hidden', role !== 'teacher');
+}
+
+/* ============================================================
+   بارگذاری روستر کلاس‌ها برای ثبت‌نام دانش‌آموز
+   ============================================================ */
+let rosterCache = [];
+async function loadRoster(){
+  const sel = document.getElementById('suClassSelect');
+  try{
+    const { roster } = await api('roster', {});
+    rosterCache = roster;
+    if (!roster.length){
+      sel.innerHTML = '<option value="">هنوز هیچ آموزگاری ثبت‌نام نکرده است</option>';
+      return;
+    }
+    sel.innerHTML = roster.map((r,i) => `<option value="${i}">${r.className} — ${r.teacherName}</option>`).join('');
+  }catch(err){
+    sel.innerHTML = '<option value="">خطا در بارگذاری لیست کلاس‌ها</option>';
+  }
+}
+
+/* ============================================================
+   اعتبارسنجی
+   ============================================================ */
+function validateDigits(fieldId, value){
+  const ok = /^\d+$/.test(value);
+  document.getElementById(fieldId).classList.toggle('has-error', !ok && value.length>0);
+  return ok && value.length>0;
+}
+function validatePassword(fieldId, value){
+  const ok = /^(?=.*[A-Za-z\u0600-\u06FF])(?=.*\d).{6,}$/.test(value);
+  document.getElementById(fieldId).classList.toggle('has-error', !ok);
+  return ok;
+}
+
+/* ============================================================
+   ورود
+   ============================================================ */
+async function handleLogin(ev){
+  ev.preventDefault();
+  clearBanner('loginBanner');
+  const code = document.getElementById('loginCode').value.trim();
+  const pw = document.getElementById('loginPw').value;
+  const captchaInput = document.getElementById('loginCaptchaInput').value.trim().toUpperCase();
+
+  if (!validateDigits('f-login-code', code)) { setBanner('loginBanner','error','کد ملی باید فقط عدد باشد'); return false; }
+  if (!pw) { setBanner('loginBanner','error','رمز عبور را وارد کنید'); return false; }
+  if (captchaInput !== captchaState.login) { setBanner('loginBanner','error','کد امنیتی درست نیست'); drawCaptcha('loginCaptchaCanvas','login'); return false; }
+
+  const btn = ev.target.querySelector('button[type=submit]');
+  btn.disabled = true;
+  try{
+    const { role, profile, mustChangePassword } = await api('login', { nationalCode: code, password: pw });
+    if (mustChangePassword){
+      pendingForceChange = { role, profile, currentPassword: pw };
+      document.getElementById('forcePwOverlay').classList.remove('hidden');
+    } else {
+      saveSession(role, profile);
+      enterApp(role, profile);
+    }
+  }catch(err){
+    setBanner('loginBanner','error', err.message);
+    drawCaptcha('loginCaptchaCanvas','login');
+  }finally{
+    btn.disabled = false;
+  }
+  return false;
+}
+
+let pendingForceChange = null;
+async function submitForcePasswordChange(){
+  clearBanner('forcePwBanner');
+  const newPw = document.getElementById('forcePwNew').value;
+  const confirmPw = document.getElementById('forcePwConfirm').value;
+  if (!/^(?=.*[A-Za-z\u0600-\u06FF])(?=.*\d).{6,}$/.test(newPw)){ setBanner('forcePwBanner','error','رمز جدید باید ترکیبی از عدد و حرف و حداقل ۶ کاراکتر باشد'); return; }
+  if (newPw !== confirmPw){ setBanner('forcePwBanner','error','تکرار رمز با رمز جدید یکی نیست'); return; }
+  if (!pendingForceChange) return;
+  try{
+    await api('changePassword', {
+      role: pendingForceChange.role,
+      nationalCode: pendingForceChange.profile.nationalCode,
+      currentPassword: pendingForceChange.currentPassword,
+      newPassword: newPw,
+    });
+    document.getElementById('forcePwOverlay').classList.add('hidden');
+    document.getElementById('forcePwNew').value = '';
+    document.getElementById('forcePwConfirm').value = '';
+    saveSession(pendingForceChange.role, pendingForceChange.profile);
+    enterApp(pendingForceChange.role, pendingForceChange.profile);
+    pendingForceChange = null;
+  }catch(err){
+    setBanner('forcePwBanner','error', err.message);
+  }
+}
+
+/* ============================================================
+   ثبت‌نام
+   ============================================================ */
+async function handleSignup(ev){
+  ev.preventDefault();
+  clearBanner('signupBanner');
+  const firstName = document.getElementById('suFirstName').value.trim();
+  const lastName = document.getElementById('suLastName').value.trim();
+  const code = document.getElementById('suCode').value.trim();
+  const password = document.getElementById('suPassword').value;
+  const captchaInput = document.getElementById('suCaptchaInput').value.trim().toUpperCase();
+
+  let valid = true;
+  if (!firstName) valid = false;
+  if (!lastName) valid = false;
+  if (!validateDigits('f-su-code', code)) valid = false;
+  if (!validatePassword('f-su-pw', password)) valid = false;
+
+  if (!valid){ setBanner('signupBanner','error','لطفاً فیلدها را به‌درستی تکمیل کنید'); return false; }
+  if (captchaInput !== captchaState.su){ setBanner('signupBanner','error','کد امنیتی درست نیست'); drawCaptcha('suCaptchaCanvas','su'); return false; }
+
+  const btn = ev.target.querySelector('button[type=submit]');
+  btn.disabled = true;
+  try{
+    if (currentSignupRole === 'student'){
+      const idx = document.getElementById('suClassSelect').value;
+      if (idx === ''){ throw new Error('کلاس و آموزگار را انتخاب کنید'); }
+      const chosen = rosterCache[idx];
+      await api('registerStudent', {
+        firstName, lastName, nationalCode: code, password,
+        className: chosen.className, teacherNationalCode: chosen.teacherNationalCode
+      });
+      setBanner('signupBanner','success','ثبت‌نام با موفقیت انجام شد. اکنون وارد شوید.');
+    } else {
+      const className = document.getElementById('suTeacherClassName').value.trim();
+      const securityQuestion = document.getElementById('suSecurityQuestion').value;
+      const securityAnswer = document.getElementById('suSecurityAnswer').value.trim();
+      if (!className){ throw new Error('نام کلاس را وارد کنید'); }
+      if (!securityAnswer){ throw new Error('پاسخ سوال امنیتی را وارد کنید'); }
+      await api('registerTeacher', { firstName, lastName, nationalCode: code, password, className, securityQuestion, securityAnswer });
+      setBanner('signupBanner','success','ثبت‌نام با موفقیت انجام شد. اکنون وارد شوید.');
+    }
+    ev.target.reset();
+    drawCaptcha('suCaptchaCanvas','su');
+    setTimeout(()=> switchTab('login'), 1400);
+  }catch(err){
+    setBanner('signupBanner','error', err.message);
+    drawCaptcha('suCaptchaCanvas','su');
+  }finally{
+    btn.disabled = false;
+  }
+  return false;
+}
+
+/* ============================================================
+   نشست کاربر
+   ============================================================ */
+function saveSession(role, profile){
+  localStorage.setItem('daftarcheh_session', JSON.stringify({ role, profile }));
+}
+function getSession(){
+  try{ return JSON.parse(localStorage.getItem('daftarcheh_session')); }catch(e){ return null; }
+}
+function logout(){
+  localStorage.removeItem('daftarcheh_session');
+  document.getElementById('view-student').classList.add('hidden');
+  document.getElementById('view-teacher').classList.add('hidden');
+  document.getElementById('view-auth').classList.remove('hidden');
+  switchTab('login');
+}
+
+function initials(profile){ return (profile.firstName || '؟')[0]; }
+
+function enterApp(role, profile){
+  document.getElementById('view-auth').classList.add('hidden');
+  if (role === 'student'){
+    document.getElementById('view-teacher').classList.add('hidden');
+    document.getElementById('view-student').classList.remove('hidden');
+    document.getElementById('stAvatar').textContent = initials(profile);
+    document.getElementById('stName').textContent = profile.firstName + ' ' + profile.lastName;
+    document.getElementById('stClass').textContent = profile.className;
+    loadStudentMessages(profile);
+  } else {
+    document.getElementById('view-student').classList.add('hidden');
+    document.getElementById('view-teacher').classList.remove('hidden');
+    document.getElementById('tAvatar').textContent = initials(profile);
+    document.getElementById('tName').textContent = profile.firstName + ' ' + profile.lastName;
+    document.getElementById('tClass').textContent = profile.className;
+    const info = todayJalaliInfo();
+    document.getElementById('composeJalali').textContent = info.jalaliStr;
+    document.getElementById('composeDay').textContent = info.dayName;
+    loadTeacherMessages(profile);
+    loadClassStudents(profile);
+  }
+}
+
+/* ============================================================
+   دانش‌آموزان کلاس + بازنشانی رمز (پنل معلم)
+   ============================================================ */
+let classStudentsCache = [];
+async function loadClassStudents(profile){
+  try{
+    const { students } = await api('getClassStudents', { teacherNationalCode: profile.nationalCode });
+    classStudentsCache = students;
+  }catch(err){
+    classStudentsCache = [];
+  }
+}
+
+function openResetPwModal(){
+  const sel = document.getElementById('resetPwStudentSelect');
+  if (!classStudentsCache.length){
+    sel.innerHTML = '<option value="">هنوز دانش‌آموزی در این کلاس ثبت‌نام نکرده است</option>';
+  } else {
+    sel.innerHTML = classStudentsCache.map(s => `<option value="${s.nationalCode}">${escapeHtml(s.firstName)} ${escapeHtml(s.lastName)}</option>`).join('');
+  }
+  clearBanner('resetPwBanner');
+  document.getElementById('resetPwStep1').classList.remove('hidden');
+  document.getElementById('resetPwStep2').classList.add('hidden');
+  document.getElementById('resetPwOverlay').classList.remove('hidden');
+}
+function closeResetPwModal(){
+  document.getElementById('resetPwOverlay').classList.add('hidden');
+}
+
+async function submitResetStudentPw(){
+  clearBanner('resetPwBanner');
+  const session = getSession();
+  if (!session) return;
+  const studentNationalCode = document.getElementById('resetPwStudentSelect').value;
+  if (!studentNationalCode){ setBanner('resetPwBanner','error','دانش‌آموز را انتخاب کنید'); return; }
+
+  const s = classStudentsCache.find(x => x.nationalCode === studentNationalCode);
+  const studentName = s ? `${s.firstName} ${s.lastName}` : 'دانش‌آموز';
+
+  try{
+    const { tempPassword } = await api('resetStudentPassword', {
+      teacherNationalCode: session.profile.nationalCode,
+      studentNationalCode,
+    });
+    document.getElementById('resetPwStudentName').textContent = studentName;
+    document.getElementById('resetPwTempValue').value = tempPassword;
+    document.getElementById('resetPwStep1').classList.add('hidden');
+    document.getElementById('resetPwStep2').classList.remove('hidden');
+  }catch(err){
+    setBanner('resetPwBanner','error', err.message);
+  }
+}
+
+/* ============================================================
+   صفحه‌بندی عمومی (۵تایی)
+   ============================================================ */
+const PAGE_SIZE = 5;
+function paginationHtml(total, page, goFn){
+  const totalPages = Math.max(1, Math.ceil(total / PAGE_SIZE));
+  return `
+    <div class="pagination">
+      <button ${page<=1?'disabled':''} onclick="${goFn}(${page-1})">قبلی</button>
+      <span class="page-info">${toPersianDigits(page)} / ${toPersianDigits(totalPages)}</span>
+      <button ${page>=totalPages?'disabled':''} onclick="${goFn}(${page+1})">بعدی</button>
+    </div>`;
+}
+function pageSlice(arr, page){
+  const start = (page-1) * PAGE_SIZE;
+  return arr.slice(start, start + PAGE_SIZE);
+}
+
+/* ============================================================
+   نمای دانش‌آموز
+   ============================================================ */
+let studentMessagesAll = [];
+let studentPage = 1;
+let studentProfileRef = null;
+
+async function loadStudentMessages(profile){
+  studentProfileRef = profile;
+  const wrap = document.getElementById('studentList');
+  wrap.innerHTML = '<div class="loader"><div class="spin-dot"></div> در حال بارگذاری…</div>';
+  try{
+    const { messages } = await api('getStudentMessages', { nationalCode: profile.nationalCode });
+    studentMessagesAll = messages;
+    studentPage = 1;
+    renderStudentPage();
+  }catch(err){
+    wrap.innerHTML = `<div class="empty-state glass"><div class="glyph">⚠️</div><p>${err.message}</p></div>`;
+  }
+}
+
+function goStudentPage(page){
+  const totalPages = Math.max(1, Math.ceil(studentMessagesAll.length / PAGE_SIZE));
+  if (page < 1 || page > totalPages) return;
+  studentPage = page;
+  renderStudentPage();
+  document.getElementById('studentList').scrollIntoView({ behavior:'smooth', block:'start' });
+}
+
+function renderStudentPage(){
+  const wrap = document.getElementById('studentList');
+  if (!studentMessagesAll.length){
+    wrap.innerHTML = `<div class="empty-state glass"><div class="glyph">📭</div><p>هنوز پیامی از آموزگار ارسال نشده است</p></div>`;
+    return;
+  }
+  const pageItems = pageSlice(studentMessagesAll, studentPage);
+  wrap.innerHTML =
+    `<div class="timeline">${pageItems.map(m => studentItemHtml(m, studentProfileRef)).join('')}</div>` +
+    paginationHtml(studentMessagesAll.length, studentPage, 'goStudentPage');
+}
+
+function studentItemHtml(m, profile){
+  const teacherHtml = m.teacherComment
+    ? `<div class="who">نظر آموزگار</div><div>${escapeHtml(m.teacherComment)}</div>`
+    : `<div class="who">نظر آموزگار</div><div class="empty">هنوز نظری ثبت نشده</div>`;
+
+  const parentHtml = m.parentComment
+    ? `<div class="who">نظر ولی</div><div>${escapeHtml(m.parentComment)}</div>`
+    : '';
+
+  const parentInput = !m.parentComment ? `
+    <div class="parent-input">
+      <textarea id="pc-${m.id}" placeholder="نظر ولی را اینجا بنویسید…"></textarea>
+      <button class="btn small" onclick="submitParentComment('${m.id}','${profile.nationalCode}')">ثبت نظر ولی</button>
+    </div>` : '';
+
+  return `
+    <div class="glass t-item">
+      <div class="t-date">
+        <span class="jalali">${prettyJalali(m.jalaliDate)}</span>
+        <span class="day">${m.dayName}</span>
+      </div>
+      <div class="t-text">${escapeHtml(m.text)}</div>
+      <div class="comment-block teacher">${teacherHtml}</div>
+      <div class="comment-block parent">${parentHtml || '<div class="who">نظر ولی</div><div class="empty">هنوز نظری ثبت نشده</div>'}</div>
+      ${parentInput}
+    </div>`;
+}
+
+async function submitParentComment(messageId, nationalCode){
+  const ta = document.getElementById('pc-'+messageId);
+  const comment = ta.value.trim();
+  if (!comment){ showToast('نظر خالی است'); return; }
+  try{
+    await api('parentComment', { messageId, nationalCode, comment });
+    showToast('نظر ولی ثبت شد');
+    const { messages } = await api('getStudentMessages', { nationalCode });
+    studentMessagesAll = messages;
+    renderStudentPage();
+  }catch(err){ showToast(err.message); }
+}
+
+/* ============================================================
+   نمای آموزگار
+   ============================================================ */
+async function sendTeacherMessage(){
+  const session = getSession();
+  if (!session) return;
+  const text = document.getElementById('composeText').value.trim();
+  clearBanner('composeBanner');
+  if (!text){ setBanner('composeBanner','error','متن پیام را بنویسید'); return; }
+  const info = todayJalaliInfo();
+  try{
+    await api('sendMessage', {
+      teacherNationalCode: session.profile.nationalCode,
+      className: session.profile.className,
+      jalaliDate: info.jalaliStr,
+      dayName: info.dayName,
+      text,
+      teacherName: session.profile.firstName + ' ' + session.profile.lastName
+    });
+    document.getElementById('composeText').value = '';
+    setBanner('composeBanner','success','پیام برای همه دانش‌آموزان کلاس ارسال شد');
+    loadTeacherMessages(session.profile);
+  }catch(err){
+    setBanner('composeBanner','error', err.message);
+  }
+}
+
+let teacherMessagesAll = [];
+let teacherPage = 1;
+let teacherProfileRef = null;
+
+async function loadTeacherMessages(profile){
+  teacherProfileRef = profile;
+  const wrap = document.getElementById('teacherDayList');
+  wrap.innerHTML = '<div class="loader"><div class="spin-dot"></div> در حال بارگذاری…</div>';
+  try{
+    const { messages } = await api('getTeacherMessages', { nationalCode: profile.nationalCode });
+    teacherMessagesAll = messages;
+    teacherPage = 1;
+    renderTeacherPage();
+  }catch(err){
+    wrap.innerHTML = `<div class="empty-state glass"><div class="glyph">⚠️</div><p>${err.message}</p></div>`;
+  }
+}
+
+function goTeacherPage(page){
+  const totalPages = Math.max(1, Math.ceil(teacherMessagesAll.length / PAGE_SIZE));
+  if (page < 1 || page > totalPages) return;
+  teacherPage = page;
+  renderTeacherPage();
+  document.getElementById('teacherDayList').scrollIntoView({ behavior:'smooth', block:'start' });
+}
+
+function renderTeacherPage(){
+  const wrap = document.getElementById('teacherDayList');
+  if (!teacherMessagesAll.length){
+    wrap.innerHTML = `<div class="empty-state glass"><div class="glyph">🗓️</div><p>هنوز پیامی ارسال نکرده‌اید</p></div>`;
+    return;
+  }
+  const pageItems = pageSlice(teacherMessagesAll, teacherPage);
+  wrap.innerHTML =
+    `<div class="day-list">${pageItems.map(m => teacherDayHtml(m)).join('')}</div>` +
+    paginationHtml(teacherMessagesAll.length, teacherPage, 'goTeacherPage');
+}
+
+function teacherDayHtml(m){
+  return `
+    <div class="glass day-item" id="day-${m.id}">
+      <div class="day-head" onclick="toggleDay('${m.id}')">
+        <div class="d-left">
+          <span class="jalali">${prettyJalali(m.jalaliDate)}</span>
+          <span class="day">${m.dayName}</span>
+        </div>
+        <span class="preview">${escapeHtml(m.text)}</span>
+        <svg class="chevron" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6"/></svg>
+      </div>
+      <div class="day-body" id="day-body-${m.id}">
+        <div class="day-body-inner">
+          <div class="full-text">${escapeHtml(m.text)}</div>
+          <div id="students-${m.id}"><div class="loader"><div class="spin-dot"></div> در حال بارگذاری دانش‌آموزان…</div></div>
+        </div>
+      </div>
+    </div>`;
+}
+
+const loadedDays = new Set();
+function toggleDay(messageId){
+  const item = document.getElementById('day-'+messageId);
+  const body = document.getElementById('day-body-'+messageId);
+  const isOpen = item.classList.toggle('open');
+  if (isOpen){
+    body.style.maxHeight = body.scrollHeight + 400 + 'px';
+    if (!loadedDays.has(messageId)) loadMessageStudents(messageId);
+  } else {
+    body.style.maxHeight = '0px';
+  }
+}
+
+async function loadMessageStudents(messageId){
+  const wrap = document.getElementById('students-'+messageId);
+  try{
+    const { students } = await api('getMessageStudents', { messageId });
+    loadedDays.add(messageId);
+    if (!students.length){
+      wrap.innerHTML = `<p style="color:var(--muted);font-size:13px">دانش‌آموزی در این کلاس ثبت‌نام نکرده است</p>`;
+    } else {
+      wrap.innerHTML = students.map(s => `
+        <div class="student-row">
+          <div class="s-name">${s.firstName} ${s.lastName}</div>
+          <div class="comment-block parent" style="margin-top:0">
+            <div class="who">نظر ولی</div>
+            <div>${s.parentComment ? escapeHtml(s.parentComment) : '<span class="empty">هنوز نظری ثبت نشده</span>'}</div>
+          </div>
+          <textarea id="tc-${messageId}-${s.nationalCode}" placeholder="پاسخ آموزگار…">${s.teacherComment ? escapeHtml(s.teacherComment) : ''}</textarea>
+          <button class="btn small" onclick="submitTeacherComment('${messageId}','${s.nationalCode}')">ثبت نظر آموزگار</button>
+        </div>
+      `).join('');
+    }
+    const item = document.getElementById('day-'+messageId);
+    if (item.classList.contains('open')){
+      document.getElementById('day-body-'+messageId).style.maxHeight = document.getElementById('day-body-'+messageId).scrollHeight + 60 + 'px';
+    }
+  }catch(err){
+    wrap.innerHTML = `<p style="color:var(--danger);font-size:13px">${err.message}</p>`;
+  }
+}
+
+async function submitTeacherComment(messageId, studentNationalCode){
+  const ta = document.getElementById(`tc-${messageId}-${studentNationalCode}`);
+  const comment = ta.value.trim();
+  if (!comment){ showToast('نظر خالی است'); return; }
+  try{
+    await api('teacherComment', { messageId, studentNationalCode, comment });
+    showToast('نظر آموزگار ثبت شد');
+  }catch(err){ showToast(err.message); }
+}
+
+/* ============================================================
+   ابزار
+   ============================================================ */
+function escapeHtml(str){
+  const div = document.createElement('div');
+  div.textContent = str;
+  return div.innerHTML;
+}
+
+/* ============================================================
+   شروع
+   ============================================================ */
+drawCaptcha('loginCaptchaCanvas','login');
+drawCaptcha('suCaptchaCanvas','su');
+loadRoster();
+
+(function boot(){
+  const session = getSession();
+  if (session && session.role && session.profile) enterApp(session.role, session.profile);
+})();
+</script>
+</body>
+</html>
