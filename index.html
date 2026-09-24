@@ -948,7 +948,7 @@
       icon: "inbox",
       special: "messages"
     },
-    gallery: {
+  /*  gallery: {
       label: "گالری تصاویر",
       icon: "gallery",
       fields: [
@@ -957,7 +957,7 @@
           {key:"caption", label:"توضیح کوتاه"}
         ]}
       ]
-    },
+    },*/
     registrations: {
       label: "درخواست‌های پیش‌ثبت‌نام",
       icon: "inbox",
@@ -1198,11 +1198,11 @@
   document.addEventListener("keydown", function(e){ if(e.key === "Escape" && $("#newsDetailOverlay").classList.contains("open")) closeNewsDetail(); });
 
   var DEFAULT_GALLERY = [
-    {image:"", color:"#123832", caption:"حیاط مدرسه"},
-    {image:"", color:"#8C3B3B", caption:"کلاس درس"},
-    {image:"", color:"#1B4B44", caption:"کتابخانه"},
-    {image:"", color:"#E4CE8C", caption:"سالن ورزش"},
-    {image:"", color:"#0C2825", caption:"جشن پایان سال"}
+    {image:"http://www.hejab12tehran.ir/img/yard.JPG", color:"#123832", caption:"حیاط مدرسه"},
+    {image:"http://www.hejab12tehran.ir/img/class.JPG", color:"#8C3B3B", caption:"کلاس درس"},
+    {image:"http://www.hejab12tehran.ir/img/lib.JPG", color:"#1B4B44", caption:"کتابخانه"},
+    {image:"http://www.hejab12tehran.ir/img/azm.JPG", color:"#E4CE8C", caption:"آزمایشگاه "},
+    {image:"http://www.hejab12tehran.ir/img/DSC_0273.JPG", color:"#0C2825", caption:"سرویس بهداشتی"}
   ];
   function galleryItemHtml(g, idx){
     var inner = g.image
